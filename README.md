@@ -70,7 +70,7 @@ truyền thì rơi về `seo` trong JSON. Điều hướng trong `EduLayout` dù
    `content="..."` của thẻ `<meta name="theme-color">` trong `EduLayout.astro`
    cho khớp `--color-brand-900` mới.
 7. Sửa `site` trong `astro.config.mjs` sang domain thật khi khách chốt.
-8. Trước khi build production: `grep -rn "MOCK:" src/` phải trả về rỗng.
+8. Trước khi build production: `npm run build && npm run verify` phải trả về PASS.
 9. **Không sửa component nào** (`src/components/`, `src/layouts/EduLayout.astro`)
    trừ khi cả 3 khách Edu liên tiếp cùng cần một thay đổi giống nhau
    (nguyên tắc Rule-of-Three).

@@ -51,8 +51,7 @@ hardcode nội dung.
 ### Nội dung nháp (mockup) vs nội dung thật
 Mọi giá trị nháp phải bọc `"[MOCK: ...]"`. Ảnh mẫu dùng SVG tự vẽ
 (`src/assets/placeholder-*.svg`) — **không** copy ảnh thật của bất kỳ khách nào
-vào kit dùng chung. Trước khi build production: `grep -rn "MOCK:" src/` phải
-trả về rỗng.
+vào kit dùng chung. Trước khi build production: `npm run build && npm run verify` phải trả về PASS.
 
 ### Commit
 Commit từng bước nhỏ, có ý nghĩa.
@@ -61,12 +60,11 @@ Commit từng bước nhỏ, có ý nghĩa.
 
 - [ ] Responsive xuống 375px (iPhone SE) không vỡ layout, kiểm tra **mọi trang**
 - [ ] Lighthouse Performance ≥ 95, chạy cho **mọi trang** (`EduLayout` có 5 trang + 404)
-- [ ] Mỗi trang đúng một `<h1>` — trang con truyền `headingLevel="h1"` cho section đầu tiên
+- [ ] npm run build && npm run verify trả về PASS (kiểm tra MOCK còn sót + mỗi trang đúng 1 <h1>)
 - [ ] Ảnh dùng `<Image />`, có `width`/`height`, format WebP/AVIF
 - [ ] Focus bàn phím nhìn thấy được, tôn trọng `prefers-reduced-motion`
 - [ ] Meta title/description riêng từng trang, Open Graph, favicon đầy đủ
 - [ ] Không có JS nào tải mà không cần thiết
-- [ ] `grep -rn "MOCK:" src/` trả về rỗng
 
 ## Khi không chắc
 
