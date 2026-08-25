@@ -1,0 +1,100 @@
+---
+import Icon from '../ui/Icon.astro';
+import MapEmbed from './MapEmbed.astro';
+import type { CollectionEntry } from 'astro:content';
+
+type Client = CollectionEntry<'clients'>['data'];
+
+interface Props {
+  contact: Client['contact'];
+  contactSection: Client['contactSection'];
+  centreName: string;
+}
+
+const { contact, contactSection, centreName } = Astro.props;
+const mainPhone = contact.phones[0];
+const mapped = contact.locations.find((loc) => loc.mapEmbedUrl);
+---
+
+<section id="lien-he" class="scroll-mt-20 bg-white py-20 sm:py-28">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6">
+    <p class="eyebrow text-brand-600">Liên hệ</p>
+    <h2 class="mt-5 max-w-2xl font-display text-4xl leading-tight font-bold text-brand-900 sm:text-5xl">
+      {contactSection.heading}
+    </h2>
+    <p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-500">{contactSection.intro}</p>
+
+    <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+      <a
+        href={`tel:${mainPhone.number}`}
+        class="inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-900 px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-brand-800"
+      >
+        <Icon name="phone" class="size-5" />
+        Gọi {mainPhone.display}
+      </a>
+      <a
+        href={contact.zaloUrl}
+        rel="noopener"
+        class="inline-flex items-center justify-center gap-2.5 rounded-full bg-gold-400 px-8 py-4 text-base font-semibold text-brand-900 transition-colors hover:bg-gold-300"
+      >
+        <Icon name="chat" class="size-5" />
+        Nhắn Zalo
+      </a>
+    </div>
+
+    <div class="stagger mt-16 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="lift border-t border-paper-line pt-5">
+        <span class="eyebrow block text-ink-400">Điện thoại</span>
+        <ul class="mt-3 space-y-1.5">
+          {
+            contact.phones.map((p) => (
+              <li class="text-sm">
+                <a href={`tel:${p.number}`} class="font-semibold text-ink-900 hover:text-brand-700">
+                  {p.display}
+                </a>
+                <span class="block text-ink-500">{p.name}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      {
+        contact.locations.map((loc) => (
+          <div class="lift border-t border-paper-line pt-5">
+            <span class="eyebrow block text-ink-400">{loc.label}</span>
+            <p class="mt-3 text-sm leading-relaxed text-ink-700">{loc.address}</p>
+            {loc.mapDirectionsUrl && (
+              <a
+                href={loc.mapDirectionsUrl}
+                rel="noopener"
+                class="mt-2 inline-block text-sm font-semibold text-brand-700 hover:underline"
+              >
+                Xem chỉ đường
+              </a>
+            )}
+          </div>
+        ))
+      }
+
+      <div class="lift border-t border-paper-line pt-5">
+        <span class="eyebrow block text-ink-400">Email</span>
+        <a
+          href={`mailto:${contact.email}`}
+          class="mt-3 block text-sm break-all text-ink-700 hover:text-brand-700"
+        >
+          {contact.email}
+        </a>
+        <span class="eyebrow mt-5 block text-ink-400">Giờ hỗ trợ</span>
+        <p class="mt-3 text-sm text-ink-700">{contact.openingHours}</p>
+      </div>
+    </div>
+
+    <div class="mt-14 overflow-hidden rounded-sm border border-paper-line">
+      <MapEmbed
+        embedUrl={mapped?.mapEmbedUrl}
+        title={`Bản đồ đường tới ${centreName} — ${mapped?.label ?? ''}`}
+      />
+    </div>
+  </div>
+</section>
