@@ -1,0 +1,263 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import Icon from '../components/ui/Icon.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  client: CollectionEntry<'clients'>['data'];
+}
+
+const { client } = Astro.props;
+const { seo, contact, name, shortName, tagline, logo, logoLight } = client;
+const mainPhone = contact.phones[0];
+
+const nav = [
+  { label: 'Khóa học', href: '#khoa-hoc' },
+  { label: 'Vì sao chọn', href: '#vi-sao' },
+  { label: 'Hoạt động', href: '#hoat-dong' },
+  { label: 'Cảm nhận', href: '#cam-nhan' },
+  { label: 'Liên hệ', href: '#lien-he' },
+];
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+const socials = [
+  contact.facebookUrl && { label: 'Facebook', href: contact.facebookUrl },
+  contact.instagramUrl && { label: 'Instagram', href: contact.instagramUrl },
+].filter(Boolean) as { label: string; href: string }[];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name,
+  description: seo.description,
+  url: canonical,
+  email: contact.email,
+  telephone: contact.phones.map((p) => p.number),
+  sameAs: socials.map((s) => s.href),
+  address: contact.locations.map((loc) => ({
+    '@type': 'PostalAddress',
+    streetAddress: loc.address,
+    addressCountry: 'VN',
+  })),
+};
+---
+
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {/* Hai file font cần cho khối chữ đầu tiên người dùng nhìn thấy */}
+    <link rel="preload" href="/fonts/playfair-700-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/bevietnam-400-vietnamese.woff2" as="font" type="font/woff2" crossorigin />
+    {/* Khớp --color-brand-900 của theme đang import trong global.css — đổi theme thì đổi luôn giá trị này */}
+    <meta name="theme-color" content="#134e4a" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={name} />
+    <meta property="og:title" content={seo.title} />
+    <meta property="og:description" content={seo.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={seo.locale} />
+    <meta property="og:image" content={new URL(client.hero.image.src, Astro.site).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+
+  <body class="bg-white text-ink-700">
+    {/* Vach tien do doc — chay theo % da cuon, thuan CSS */}
+    <div class="read-progress" aria-hidden="true"></div>
+
+    <a
+      href="#noi-dung"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-brand-900 focus:px-4 focus:py-2 focus:text-white"
+    >
+      Bỏ qua, tới nội dung chính
+    </a>
+
+    <header class="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur">
+      <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+        <a href="/" class="flex min-w-0 items-center gap-3">
+          <Image src={logo} alt="" width={44} height={57} class="h-9 w-auto" loading="eager" />
+          <span class="min-w-0 border-l border-slate-200 pl-3">
+            <span class="eyebrow block truncate text-brand-900">{shortName}</span>
+            <span class="mt-1.5 block truncate text-xs leading-tight text-ink-500">{tagline}</span>
+          </span>
+        </a>
+
+        <nav aria-label="Điều hướng chính" class="hidden lg:block">
+          <ul class="flex items-center gap-1">
+            {
+              nav.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    class="rounded-lg px-3 py-2 text-sm font-medium text-ink-700 transition-colors hover:bg-brand-50 hover:text-brand-700"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <a
+            href={`tel:${mainPhone.number}`}
+            class="hidden items-center gap-2 rounded-full bg-brand-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800 sm:inline-flex"
+          >
+            <Icon name="phone" class="size-4" />
+            Gọi tư vấn
+          </a>
+
+          <details class="group relative lg:hidden">
+            <summary
+              class="grid size-10 cursor-pointer list-none place-items-center rounded-lg text-brand-900 ring-1 ring-slate-200 [&::-webkit-details-marker]:hidden"
+              aria-label="Mở menu"
+            >
+              <svg
+                class="size-5 group-open:hidden"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M4 7h16M4 12h16M4 17h16" />
+              </svg>
+              <svg
+                class="hidden size-5 group-open:block"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </summary>
+            <nav
+              aria-label="Điều hướng trên di động"
+              class="absolute right-0 mt-2 w-60 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl"
+            >
+              <ul>
+                {
+                  nav.map((item) => (
+                    <li>
+                      <a
+                        href={item.href}
+                        class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-brand-50 hover:text-brand-700"
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+              <a
+                href={`tel:${mainPhone.number}`}
+                class="mt-1 flex items-center justify-center gap-2 rounded-lg bg-brand-900 px-3 py-2.5 text-sm font-semibold text-white sm:hidden"
+              >
+                <Icon name="phone" class="size-4" />
+                Gọi tư vấn
+              </a>
+            </nav>
+          </details>
+        </div>
+      </div>
+
+    </header>
+
+    <main id="noi-dung">
+      <slot />
+    </main>
+
+    <footer class="bg-brand-950 text-brand-200">
+      <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+        <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="sm:col-span-2 lg:col-span-1">
+            <Image src={logoLight} alt={name} width={62} height={80} class="h-12 w-auto" />
+            <p class="mt-4 max-w-xs text-sm leading-relaxed">{client.hero.subheading}</p>
+            {
+              socials.length > 0 && (
+                <ul class="mt-5 flex gap-2">
+                  {socials.map((s) => (
+                    <li>
+                      <a
+                        href={s.href}
+                        rel="noopener"
+                        class="inline-block rounded-lg px-3 py-1.5 text-sm font-medium text-white ring-1 ring-white/20 transition-colors hover:bg-white/10"
+                      >
+                        {s.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )
+            }
+          </div>
+
+          <div>
+            <h2 class="eyebrow text-gold-400">Cơ sở</h2>
+            <ul class="mt-4 space-y-4 text-sm">
+              {
+                contact.locations.map((loc) => (
+                  <li>
+                    <p class="font-semibold text-white">{loc.label}</p>
+                    <p class="mt-1 leading-relaxed">{loc.address}</p>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="eyebrow text-gold-400">Liên hệ</h2>
+            <ul class="mt-4 space-y-2.5 text-sm">
+              {
+                contact.phones.map((p) => (
+                  <li class="flex gap-2">
+                    <Icon name="phone" class="size-4 shrink-0 translate-y-0.5 text-gold-400" />
+                    <a href={`tel:${p.number}`} class="hover:text-white">
+                      {p.display} <span class="text-brand-300">({p.name})</span>
+                    </a>
+                  </li>
+                ))
+              }
+              <li class="flex gap-2">
+                <Icon name="mail" class="size-4 shrink-0 translate-y-0.5 text-gold-400" />
+                <a href={`mailto:${contact.email}`} class="break-all hover:text-white">
+                  {contact.email}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="eyebrow text-gold-400">Giờ hỗ trợ</h2>
+            <p class="mt-4 flex gap-2 text-sm">
+              <Icon name="clock" class="size-4 shrink-0 translate-y-0.5 text-gold-400" />
+              {contact.openingHours}
+            </p>
+          </div>
+        </div>
+
+        <p class="mt-12 border-t border-white/10 pt-6 text-xs text-brand-300">
+          © {new Date().getFullYear()} {name}. Website thiết kế bởi DashGrow.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
