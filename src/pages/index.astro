@@ -1,0 +1,29 @@
+---
+import { getEntry } from 'astro:content';
+import EduLayout from '../layouts/EduLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import CourseIndex from '../components/sections/CourseIndex.astro';
+import WhyUs from '../components/sections/WhyUs.astro';
+import Activities from '../components/sections/Activities.astro';
+import Testimonials from '../components/sections/Testimonials.astro';
+import ContactBlock from '../components/sections/ContactBlock.astro';
+
+const entry = await getEntry('clients', '_example-edu');
+if (!entry) {
+  throw new Error('Không tìm thấy src/content/clients/_example-edu.json');
+}
+const client = entry.data;
+---
+
+<EduLayout client={client}>
+  <Hero hero={client.hero} />
+  <CourseIndex courses={client.courses} ctaHref="#lien-he" />
+  <WhyUs whyUs={client.whyUs} />
+  <Activities activities={client.activities} />
+  <Testimonials testimonials={client.testimonials} />
+  <ContactBlock
+    contact={client.contact}
+    contactSection={client.contactSection}
+    centreName={client.name}
+  />
+</EduLayout>
