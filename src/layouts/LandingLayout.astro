@@ -1,0 +1,39 @@
+---
+/**
+ * Skeleton layout — chưa có khách thật thuộc phân khúc "landing 1 trang, 1 CTA"
+ * (vd: spa, khóa học ngắn hạn, sự kiện). KHÔNG tự thêm section/nav ở đây.
+ *
+ * Định hình cụ thể khi có khách #2/#3 thật thuộc phân khúc này, theo đúng
+ * nguyên tắc Rule-of-Three — xem docs/superpowers/specs/2026-08-25-dg-site-kit-design.md.
+ */
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="bg-white text-ink-700">
+    <header>
+      {/* TODO: header thật (logo, 1 CTA chính) khi có khách thật thuộc phân khúc này */}
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      {/* TODO: footer thật khi có khách thật thuộc phân khúc này */}
+    </footer>
+  </body>
+</html>
