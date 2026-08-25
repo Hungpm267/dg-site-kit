@@ -1,0 +1,258 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  testimonials: CollectionEntry<'clients'>['data']['testimonials'];
+}
+
+const { testimonials } = Astro.props;
+const items = testimonials.items;
+const n = items.length;
+
+// Chỉ số slide trước / sau, nối vòng đầu-cuối.
+const prevOf = (i: number) => (i - 1 + n) % n;
+const nextOf = (i: number) => (i + 1) % n;
+
+/*
+  Luật CSS sinh theo số slide. Radio nào được chọn thì:
+   - hiện slide của nó,
+   - hiện cặp mũi tên của nó (trỏ tới slide trước/sau, cuối vòng về đầu),
+   - làm nổi ô khuôn mặt tương ứng.
+  Sinh từ vòng lặp nên thêm/bớt cảm nhận trong JSON là CSS tự khớp.
+*/
+const rules = items
+  .map((_, i) => {
+    const k = i + 1;
+    return [
+      `#cn-q${k}:checked ~ .cn-viewport .cn-slide-${k} { opacity: 1; visibility: visible; }`,
+      `#cn-q${k}:checked ~ .cn-viewport .cn-arrows-${k} { display: block; }`,
+      `#cn-q${k}:checked ~ .cn-controls .cn-thumb-${k} { opacity: 1; border-color: var(--color-gold-400); }`,
+      `#cn-q${k}:focus-visible ~ .cn-controls .cn-thumb-${k} { outline: 3px solid var(--color-gold-400); outline-offset: 3px; }`,
+    ].join('\n');
+  })
+  .join('\n');
+
+const css = `
+.cn { position: relative; }
+
+/* Radio ẩn khỏi mắt nhưng vẫn nhận được focus bàn phím.
+   Dùng clip-path chứ KHÔNG display:none — display:none sẽ mất điều hướng bàn phím. */
+.cn-input {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Chừa máng hai bên cho mũi tên để chúng không đè lên chữ */
+.cn-viewport {
+  position: relative;
+  padding-inline: 3.25rem;
+}
+@media (min-width: 640px) {
+  .cn-viewport { padding-inline: 4rem; }
+}
+
+/* Các slide chồng cùng một ô lưới, chỉ slide đang chọn hiện ra */
+.cn-stage { display: grid; }
+.cn-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.7s ease;
+}
+
+.cn-arrows { display: none; }
+
+/* Mũi tên: giữa chiều cao, sát hai mép */
+.cn-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 2.75rem; height: 2.75rem;
+  cursor: pointer;
+  color: #fff;
+  border: 1px solid rgb(255 255 255 / 0.25);
+  background: rgb(0 23 98 / 0.6);
+  backdrop-filter: blur(4px);
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.cn-arrow-prev { left: 0; }
+.cn-arrow-next { right: 0; }
+.cn-arrow svg { width: 1.25rem; height: 1.25rem; }
+.cn-arrow:hover {
+  color: var(--color-brand-900);
+  background: var(--color-gold-400);
+  border-color: var(--color-gold-400);
+}
+@media (min-width: 640px) {
+  .cn-arrow { width: 3rem; height: 3rem; }
+}
+
+.cn-thumb {
+  display: block;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.5rem;
+  opacity: 0.5;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+.cn-thumb:hover { opacity: 1; }
+${rules}
+`;
+---
+
+{/*
+  Carousel chạy bằng radio + chuyển cảnh mờ dần, không một dòng JS nào.
+
+  Vì sao mờ dần chứ không trượt ngang: nếu bấm liên tục thì phải lặp vòng tròn.
+  Nếu trượt, bước từ thẻ cuối về thẻ đầu phải tua ngược qua mọi thẻ ở giữa — nhìn giật.
+  Mờ dần thì mọi bước như nhau, kể cả bước vòng lại.
+
+  Không tự động chạy, nên không cần nút tạm dừng.
+*/}
+<section id="cam-nhan" class="scroll-mt-20 bg-brand-900 py-20 sm:py-28">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6">
+    <p class="eyebrow text-gold-400">Cảm nhận học viên</p>
+    <h2 class="mt-5 max-w-2xl font-display text-4xl leading-tight font-bold text-white sm:text-5xl">
+      {testimonials.heading}
+    </h2>
+    {
+      testimonials.intro && (
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-brand-200">{testimonials.intro}</p>
+      )
+    }
+
+    <div
+      class="cn mt-14"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Cảm nhận của học viên"
+    >
+      {/* Radio ẩn khỏi mắt nhưng vẫn nhận focus: bàn phím chuyển slide bằng phím mũi tên */}
+      {
+        items.map((item, i) => (
+          <input
+            type="radio"
+            name="cam-nhan"
+            id={`cn-q${i + 1}`}
+            class="cn-input"
+            checked={i === 0}
+            aria-label={`Cảm nhận ${i + 1} trên ${n} — ${item.role}`}
+          />
+        ))
+      }
+
+      <div class="cn-viewport">
+        <div class="cn-stage" aria-live="polite">
+          {
+            items.map((item, i) => (
+              <figure
+                class={`cn-slide cn-slide-${i + 1} grid gap-6 sm:grid-cols-12 sm:gap-8`}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${i + 1} trên ${n} — ${item.role}`}
+              >
+                {item.image && (
+                  <div class="sm:col-span-5">
+                    <div class="border-l-2 border-gold-400 pl-4">
+                      <Image
+                        src={item.image}
+                        alt={item.imageAlt ?? ''}
+                        widths={[280, 560]}
+                        sizes="(min-width: 640px) 14rem, 60vw"
+                        loading={i === 0 ? 'eager' : 'lazy'}
+                        class="aspect-3/4 w-full object-cover object-[center_28%]"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div class="flex flex-col justify-center sm:col-span-7">
+                  <blockquote>
+                    <p class="font-display text-xl leading-[1.45] font-bold text-white sm:text-2xl lg:text-[1.7rem]">
+                      {item.quote}
+                    </p>
+                  </blockquote>
+                  <figcaption class="mt-6 border-t border-white/15 pt-5">
+                    <span class="block text-sm font-semibold text-white">{item.author}</span>
+                    <span class="eyebrow mt-2 block text-gold-400">{item.role}</span>
+                  </figcaption>
+                </div>
+              </figure>
+            ))
+          }
+        </div>
+
+        {/* Mỗi slide có cặp mũi tên riêng, đặt giữa chiều cao và sát hai mép */}
+        {
+          items.map((_, i) => (
+            <div class={`cn-arrows cn-arrows-${i + 1}`}>
+              <label class="cn-arrow cn-arrow-prev" for={`cn-q${prevOf(i) + 1}`}>
+                <span class="sr-only">Cảm nhận trước</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M15 6l-6 6 6 6" />
+                </svg>
+              </label>
+              <label class="cn-arrow cn-arrow-next" for={`cn-q${nextOf(i) + 1}`}>
+                <span class="sr-only">Cảm nhận tiếp theo</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
+              </label>
+            </div>
+          ))
+        }
+      </div>
+
+      {/* Chọn thẳng một cảm nhận. Dùng khuôn mặt thay chấm tròn: biết trước sẽ nghe ai. */}
+      <div class="cn-controls mt-10">
+        <ul class="flex gap-3">
+          {
+            items.map((item, i) => (
+              <li>
+                <label class={`cn-thumb cn-thumb-${i + 1}`} for={`cn-q${i + 1}`}>
+                  {item.image && (
+                    <Image
+                      src={item.image}
+                      alt=""
+                      widths={[56, 112]}
+                      sizes="3rem"
+                      loading="lazy"
+                      class="size-12 object-cover object-[center_28%]"
+                    />
+                  )}
+                  <span class="sr-only">
+                    Xem cảm nhận {i + 1} trên {n} — {item.role}
+                  </span>
+                </label>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:inline set:html={css} />
