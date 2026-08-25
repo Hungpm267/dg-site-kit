@@ -125,15 +125,17 @@ const clients = defineCollection({
       testimonials: z.object({
         heading: z.string(),
         intro: z.string().optional(),
-        items: z.array(
-          z.object({
-            quote: z.string(),
-            author: z.string(),
-            role: z.string(),
-            image: image().optional(),
-            imageAlt: z.string().optional(),
-          }),
-        ),
+        items: z
+          .array(
+            z.object({
+              quote: z.string(),
+              author: z.string(),
+              role: z.string(),
+              image: image().optional(),
+              imageAlt: z.string().optional(),
+            }),
+          )
+          .min(1),
       }),
 
       contactSection: z.object({

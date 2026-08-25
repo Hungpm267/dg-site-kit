@@ -19,7 +19,8 @@ Xem lý do và phạm vi ở `docs/superpowers/specs/2026-08-25-dg-site-kit-desi
 
 1. Clone repo này sang thư mục dự án khách mới, `npm install`.
 2. Xóa `src/content/clients/_example-edu.json` và 5 ảnh mẫu trong `src/assets/`
-   (`placeholder-*.svg`).
+   (`placeholder-*.svg`). Thay luôn `public/favicon.svg` bằng logo/favicon riêng
+   của khách — nếu không, site khách vẫn hiện favicon teal mặc định của DG.
 3. Thêm ảnh thật của khách vào `src/assets/`.
 4. Tạo `src/content/clients/<ten-khach>.json` theo đúng schema ở
    `src/content.config.ts`. Nội dung chưa có → bọc `"[MOCK: ...]"`, không bịa

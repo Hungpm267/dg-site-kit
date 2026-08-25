@@ -70,7 +70,7 @@ const jsonLd = {
     <meta property="og:image" content={new URL(client.hero.image.src, Astro.site).href} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
   </head>
 
   <body class="bg-white text-ink-700">
