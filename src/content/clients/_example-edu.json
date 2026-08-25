@@ -1,0 +1,108 @@
+{
+  "name": "[MOCK: Tên trung tâm mẫu]",
+  "shortName": "[MOCK: Tên ngắn mẫu]",
+  "tagline": "[MOCK: Trung tâm Ngoại ngữ mẫu]",
+  "logo": "../../assets/placeholder-logo.svg",
+  "logoLight": "../../assets/placeholder-logo-light.svg",
+  "seo": {
+    "title": "[MOCK: Tiêu đề SEO mẫu — Trung tâm Ngoại ngữ]",
+    "description": "[MOCK: Mô tả SEO mẫu, dùng để xem thử cách EduLayout hiển thị nội dung dài tới khoảng 180 ký tự.]",
+    "locale": "vi_VN"
+  },
+  "contact": {
+    "phones": [
+      { "name": "[MOCK: Người phụ trách]", "number": "0900000000", "display": "0900 000 000" }
+    ],
+    "zaloUrl": "https://zalo.me/0900000000",
+    "email": "mock@example.com",
+    "locations": [
+      { "label": "[MOCK: Cơ sở 1]", "address": "[MOCK: Địa chỉ mẫu, Quận X, Thành phố Y]" }
+    ],
+    "openingHours": "[MOCK: Giờ hỗ trợ mẫu]"
+  },
+  "hero": {
+    "eyebrow": "[MOCK: Nhãn nhỏ trên tiêu đề]",
+    "heading": "[MOCK: Tiêu đề hero mẫu]",
+    "subheading": "[MOCK: Mô tả ngắn dưới tiêu đề hero, minh họa độ dài thực tế của một câu subheading.]",
+    "primaryCta": { "label": "[MOCK: Đăng ký tư vấn]", "href": "#lien-he" },
+    "secondaryCta": { "label": "[MOCK: Xem khóa học]", "href": "#khoa-hoc" },
+    "image": "../../assets/placeholder-hero.svg",
+    "imageAlt": "[MOCK: Ảnh banner mẫu]",
+    "commitments": [
+      "[MOCK: Cam kết 1]",
+      "[MOCK: Cam kết 2]",
+      "[MOCK: Cam kết 3]",
+      "[MOCK: Cam kết 4]"
+    ]
+  },
+  "courses": {
+    "heading": "[MOCK: Các khóa học mẫu]",
+    "intro": "[MOCK: Giới thiệu ngắn về danh sách khóa học mẫu.]",
+    "items": [
+      {
+        "slug": "khoa-mau-1",
+        "name": "[MOCK: Khóa học mẫu 1]",
+        "summary": "[MOCK: Mô tả khóa học mẫu 1, minh họa trường hợp đã có học phí công bố.]",
+        "audience": "[MOCK: Đối tượng mẫu]",
+        "tuition": "[MOCK: 1.000.000đ/tháng — giá minh họa]",
+        "featured": true
+      },
+      {
+        "slug": "khoa-mau-2",
+        "name": "[MOCK: Khóa học mẫu 2]",
+        "summary": "[MOCK: Mô tả khóa học mẫu 2, minh họa trường hợp chưa công bố học phí.]",
+        "featured": false
+      }
+    ]
+  },
+  "whyUs": {
+    "heading": "[MOCK: Vì sao chọn mẫu]",
+    "items": [
+      { "icon": "badge", "title": "[MOCK: Lý do 1]", "body": "[MOCK: Diễn giải lý do 1.]" },
+      { "icon": "route", "title": "[MOCK: Lý do 2]", "body": "[MOCK: Diễn giải lý do 2.]" },
+      { "icon": "users", "title": "[MOCK: Lý do 3]", "body": "[MOCK: Diễn giải lý do 3.]" }
+    ]
+  },
+  "activities": {
+    "heading": "[MOCK: Hoạt động mẫu]",
+    "intro": "[MOCK: Giới thiệu ngắn về hoạt động mẫu.]",
+    "items": [
+      {
+        "title": "[MOCK: Hoạt động 1]",
+        "caption": "[MOCK: Mô tả hoạt động 1.]",
+        "image": "../../assets/placeholder-activity.svg",
+        "imageAlt": "[MOCK: Ảnh hoạt động mẫu]"
+      },
+      {
+        "title": "[MOCK: Hoạt động 2]",
+        "caption": "[MOCK: Mô tả hoạt động 2.]",
+        "image": "../../assets/placeholder-activity.svg",
+        "imageAlt": "[MOCK: Ảnh hoạt động mẫu]"
+      }
+    ]
+  },
+  "testimonials": {
+    "heading": "[MOCK: Cảm nhận mẫu]",
+    "intro": "[MOCK: Giới thiệu ngắn phần cảm nhận mẫu.]",
+    "items": [
+      {
+        "quote": "[MOCK: Trích dẫn cảm nhận mẫu 1.]",
+        "author": "[MOCK: Học viên mẫu]",
+        "role": "[MOCK: Lớp mẫu]",
+        "image": "../../assets/placeholder-testimonial.svg",
+        "imageAlt": "[MOCK: Ảnh học viên mẫu]"
+      },
+      {
+        "quote": "[MOCK: Trích dẫn cảm nhận mẫu 2.]",
+        "author": "[MOCK: Học viên mẫu]",
+        "role": "[MOCK: Lớp mẫu]",
+        "image": "../../assets/placeholder-testimonial.svg",
+        "imageAlt": "[MOCK: Ảnh học viên mẫu]"
+      }
+    ]
+  },
+  "contactSection": {
+    "heading": "[MOCK: Đăng ký tư vấn mẫu]",
+    "intro": "[MOCK: Mô tả ngắn phần liên hệ mẫu.]"
+  }
+}

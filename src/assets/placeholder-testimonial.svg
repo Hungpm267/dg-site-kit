@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800">
+  <rect width="600" height="800" fill="#134e4a" />
+  <circle cx="300" cy="320" r="110" fill="#5eead4" fill-opacity="0.3" />
+  <text x="300" y="600" font-family="'Be Vietnam Pro', system-ui, sans-serif" font-size="26" fill="#f0fdfa" text-anchor="middle">[MOCK: Ảnh học viên mẫu]</text>
+</svg>
