@@ -1,0 +1,27 @@
+---
+import { getEntry } from 'astro:content';
+import EduLayout from '../layouts/EduLayout.astro';
+import CourseIndex from '../components/sections/CourseIndex.astro';
+import ContactBlock from '../components/sections/ContactBlock.astro';
+
+const entry = await getEntry('clients', '_example-edu');
+if (!entry) {
+  throw new Error('Không tìm thấy src/content/clients/_example-edu.json');
+}
+const client = entry.data;
+---
+
+<EduLayout
+  client={client}
+  title={`Khóa học — ${client.name}`}
+  description={client.courses.intro}
+>
+  {/* Section này là tiêu đề của trang nên tiêu đề của nó phải là h1 */}
+  <CourseIndex courses={client.courses} ctaHref="/lien-he" headingLevel="h1" />
+
+  <ContactBlock
+    contact={client.contact}
+    contactSection={client.contactSection}
+    centreName={client.name}
+  />
+</EduLayout>

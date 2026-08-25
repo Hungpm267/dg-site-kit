@@ -9,9 +9,11 @@ interface Props {
   contact: Client['contact'];
   contactSection: Client['contactSection'];
   centreName: string;
+  headingLevel?: 'h1' | 'h2';
 }
 
-const { contact, contactSection, centreName } = Astro.props;
+const { contact, contactSection, centreName, headingLevel = 'h2' } = Astro.props;
+const Heading = headingLevel;
 const mainPhone = contact.phones[0];
 const mapped = contact.locations.find((loc) => loc.mapEmbedUrl);
 ---
@@ -19,9 +21,9 @@ const mapped = contact.locations.find((loc) => loc.mapEmbedUrl);
 <section id="lien-he" class="scroll-mt-20 bg-white py-20 sm:py-28">
   <div class="mx-auto max-w-5xl px-4 sm:px-6">
     <p class="eyebrow text-brand-600">Liên hệ</p>
-    <h2 class="mt-5 max-w-2xl font-display text-4xl leading-tight font-bold text-brand-900 sm:text-5xl">
+    <Heading class="mt-5 max-w-2xl font-display text-4xl leading-tight font-bold text-brand-900 sm:text-5xl">
       {contactSection.heading}
-    </h2>
+    </Heading>
     <p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-500">{contactSection.intro}</p>
 
     <div class="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -42,8 +44,8 @@ const mapped = contact.locations.find((loc) => loc.mapEmbedUrl);
       </a>
     </div>
 
-    <div class="stagger mt-16 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="lift border-t border-paper-line pt-5">
+    <div class="mt-16 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="lift border-t border-paper-line pt-5" data-reveal>
         <span class="eyebrow block text-ink-400">Điện thoại</span>
         <ul class="mt-3 space-y-1.5">
           {
@@ -60,8 +62,8 @@ const mapped = contact.locations.find((loc) => loc.mapEmbedUrl);
       </div>
 
       {
-        contact.locations.map((loc) => (
-          <div class="lift border-t border-paper-line pt-5">
+        contact.locations.map((loc, i) => (
+          <div class="lift border-t border-paper-line pt-5" data-reveal style={`--reveal-delay:${(i + 1) * 80}ms`}>
             <span class="eyebrow block text-ink-400">{loc.label}</span>
             <p class="mt-3 text-sm leading-relaxed text-ink-700">{loc.address}</p>
             {loc.mapDirectionsUrl && (
@@ -77,7 +79,7 @@ const mapped = contact.locations.find((loc) => loc.mapEmbedUrl);
         ))
       }
 
-      <div class="lift border-t border-paper-line pt-5">
+      <div class="lift border-t border-paper-line pt-5" data-reveal>
         <span class="eyebrow block text-ink-400">Email</span>
         <a
           href={`mailto:${contact.email}`}

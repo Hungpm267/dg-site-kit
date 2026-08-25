@@ -1,29 +1,154 @@
 ---
+import { Image } from 'astro:assets';
 import { getEntry } from 'astro:content';
 import EduLayout from '../layouts/EduLayout.astro';
+import Icon from '../components/ui/Icon.astro';
 import Hero from '../components/sections/Hero.astro';
 import CourseIndex from '../components/sections/CourseIndex.astro';
 import WhyUs from '../components/sections/WhyUs.astro';
 import Activities from '../components/sections/Activities.astro';
-import Testimonials from '../components/sections/Testimonials.astro';
-import ContactBlock from '../components/sections/ContactBlock.astro';
 
 const entry = await getEntry('clients', '_example-edu');
 if (!entry) {
   throw new Error('Không tìm thấy src/content/clients/_example-edu.json');
 }
 const client = entry.data;
+
+/*
+  Trang chủ là bản tóm tắt, KHÔNG phải bản sao của các trang con.
+  Nội dung đầy đủ nằm ở /khoa-hoc, /ve-chung-toi, /hoat-dong — nếu trang chủ
+  lặp lại hết thì Google coi là trùng nội dung và tách trang thành vô nghĩa.
+
+  Cách làm: cắt bớt dữ liệu ngay tại đây rồi truyền vào đúng component cũ.
+  Không có component "phiên bản trang chủ" nào cả.
+*/
+const featuredCourses = {
+  ...client.courses,
+  heading: 'Khóa học nổi bật',
+  intro: 'Những chương trình được quan tâm nhiều nhất.',
+  // Ưu tiên khóa được đánh dấu featured trong JSON, thiếu thì lấy tiếp theo thứ tự.
+  items: [
+    ...client.courses.items.filter((c) => c.featured),
+    ...client.courses.items.filter((c) => !c.featured),
+  ].slice(0, 3),
+};
+
+const topReasons = {
+  ...client.whyUs,
+  items: client.whyUs.items.slice(0, 3),
+};
+
+const someActivities = {
+  ...client.activities,
+  heading: 'Hoạt động nổi bật',
+  items: client.activities.items.slice(0, 4),
+};
+
+// Một cảm nhận đại diện — ưu tiên cái có ảnh.
+const lead = client.testimonials.items.find((t) => t.image) ?? client.testimonials.items[0];
+
+const mainPhone = client.contact.phones[0];
 ---
 
 <EduLayout client={client}>
   <Hero hero={client.hero} />
-  <CourseIndex courses={client.courses} ctaHref="#lien-he" />
-  <WhyUs whyUs={client.whyUs} />
-  <Activities activities={client.activities} />
-  <Testimonials testimonials={client.testimonials} />
-  <ContactBlock
-    contact={client.contact}
-    contactSection={client.contactSection}
-    centreName={client.name}
+
+  <CourseIndex
+    courses={featuredCourses}
+    ctaHref="/lien-he"
+    more={{ label: 'Xem tất cả khóa học', href: '/khoa-hoc' }}
   />
+
+  <WhyUs whyUs={topReasons} more={{ label: 'Tìm hiểu thêm', href: '/ve-chung-toi' }} />
+
+  {/*
+    Một trích dẫn tĩnh, viết thẳng ở đây thay vì gọi Testimonials.astro.
+    Component đó là carousel radio sinh CSS theo số slide — dùng nó để hiện
+    đúng một câu là sai công cụ, và sẽ kéo theo cả bộ mũi tên lẫn ô chọn mặt.
+    Toàn bộ cảm nhận nằm ở /hoat-dong.
+  */}
+  {
+    lead && (
+      <section class="bg-brand-900 py-20 sm:py-28">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6">
+          <p class="eyebrow text-gold-400">Cảm nhận học viên</p>
+
+          <figure class="mt-10 grid gap-8 sm:grid-cols-12" data-reveal>
+            {lead.image && (
+              <div class="sm:col-span-4">
+                <div class="border-l-2 border-gold-400 pl-4">
+                  <Image
+                    src={lead.image}
+                    alt={lead.imageAlt ?? ''}
+                    widths={[280, 560]}
+                    sizes="(min-width: 640px) 14rem, 60vw"
+                    loading="lazy"
+                    class="aspect-3/4 w-full object-cover object-[center_28%]"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div class="flex flex-col justify-center sm:col-span-8">
+              <blockquote>
+                <p class="font-display text-xl leading-[1.45] font-bold text-white sm:text-2xl lg:text-[1.7rem]">
+                  {lead.quote}
+                </p>
+              </blockquote>
+              <figcaption class="mt-6 border-t border-white/15 pt-5">
+                <span class="block text-sm font-semibold text-white">{lead.author}</span>
+                <span class="eyebrow mt-2 block text-gold-400">{lead.role}</span>
+              </figcaption>
+            </div>
+          </figure>
+        </div>
+      </section>
+    )
+  }
+
+  <Activities
+    activities={someActivities}
+    more={{ label: 'Xem tất cả hoạt động', href: '/hoat-dong' }}
+  />
+
+  {/*
+    CTA cuối trang chủ: chỉ hai nút. Bản đồ và danh sách cơ sở nằm ở /lien-he —
+    trang chủ không cần nhắc lại địa chỉ.
+  */}
+  <section class="bg-white py-20 sm:py-28">
+    <div class="mx-auto max-w-5xl px-4 text-center sm:px-6">
+      <p class="eyebrow text-brand-600">Liên hệ</p>
+      <h2
+        class="mx-auto mt-5 max-w-2xl font-display text-4xl leading-tight font-bold text-brand-900 sm:text-5xl"
+      >
+        {client.contactSection.heading}
+      </h2>
+      <p class="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-500">
+        {client.contactSection.intro}
+      </p>
+
+      <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+        <a
+          href={`tel:${mainPhone.number}`}
+          class="inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-900 px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-brand-800"
+        >
+          <Icon name="phone" class="size-5" />
+          Gọi {mainPhone.display}
+        </a>
+        <a
+          href={client.contact.zaloUrl}
+          rel="noopener"
+          class="inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-4 text-base font-semibold text-brand-900 ring-1 ring-brand-900/20 transition-colors hover:bg-brand-50"
+        >
+          Nhắn Zalo
+        </a>
+      </div>
+
+      <p class="mt-8 text-sm text-ink-500">
+        <a href="/lien-he" class="font-semibold text-brand-700 underline-offset-4 hover:underline">
+          Xem địa chỉ và bản đồ
+        </a>
+      </p>
+    </div>
+  </section>
 </EduLayout>

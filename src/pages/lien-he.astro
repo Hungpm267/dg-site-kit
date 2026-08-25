@@ -1,0 +1,43 @@
+---
+import { getEntry } from 'astro:content';
+import EduLayout from '../layouts/EduLayout.astro';
+import ContactBlock from '../components/sections/ContactBlock.astro';
+
+const entry = await getEntry('clients', '_example-edu');
+if (!entry) {
+  throw new Error('Không tìm thấy src/content/clients/_example-edu.json');
+}
+const client = entry.data;
+---
+
+<EduLayout
+  client={client}
+  title={`Liên hệ — ${client.name}`}
+  description={client.contactSection.intro}
+>
+  {/*
+    ContactBlock đã gồm đủ: hai nút CTA, số điện thoại, cơ sở, email,
+    giờ hỗ trợ và bản đồ. Trang này không cần thêm gì — thêm nữa chỉ để trang
+    dài ra thì đó là nhồi chỗ trống, không phải thông tin.
+  */}
+  <ContactBlock
+    contact={client.contact}
+    contactSection={client.contactSection}
+    centreName={client.name}
+    headingLevel="h1"
+  />
+
+  <section class="border-t border-paper-line bg-paper py-14">
+    <div class="mx-auto max-w-5xl px-4 text-center sm:px-6">
+      <p class="text-base leading-relaxed text-ink-500">
+        Chưa biết nên học khóa nào?
+        <a
+          href="/khoa-hoc"
+          class="ml-1 font-semibold text-brand-700 underline-offset-4 hover:underline"
+        >
+          Xem danh sách khóa học
+        </a>
+      </p>
+    </div>
+  </section>
+</EduLayout>

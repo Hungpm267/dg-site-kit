@@ -1,0 +1,36 @@
+---
+import { getEntry } from 'astro:content';
+import EduLayout from '../layouts/EduLayout.astro';
+import About from '../components/sections/About.astro';
+import WhyUs from '../components/sections/WhyUs.astro';
+import ContactBlock from '../components/sections/ContactBlock.astro';
+
+const entry = await getEntry('clients', '_example-edu');
+if (!entry) {
+  throw new Error('Không tìm thấy src/content/clients/_example-edu.json');
+}
+const client = entry.data;
+
+/*
+  `about` là optional trong schema: khách chưa gửi nội dung giới thiệu thì trang
+  vẫn dựng được, chỉ còn phần "Vì sao chọn" — và phần đó lên làm h1 thay thế.
+  Không dựng khối rỗng, không bịa nội dung cho đủ trang.
+*/
+const hasAbout = Boolean(client.about);
+---
+
+<EduLayout
+  client={client}
+  title={`Về chúng tôi — ${client.name}`}
+  description={client.about?.lead ?? client.whyUs.heading}
+>
+  {client.about && <About about={client.about} headingLevel="h1" />}
+
+  <WhyUs whyUs={client.whyUs} headingLevel={hasAbout ? 'h2' : 'h1'} />
+
+  <ContactBlock
+    contact={client.contact}
+    contactSection={client.contactSection}
+    centreName={client.name}
+  />
+</EduLayout>

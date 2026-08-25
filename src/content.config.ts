@@ -91,6 +91,22 @@ const clients = defineCollection({
           .min(1),
       }),
 
+      // Giới thiệu trung tâm — dùng trên trang "Về chúng tôi" (đa trang).
+      // Optional vì không phải khách nào cũng có nội dung giới thiệu riêng;
+      // thiếu thì trang đó chỉ còn phần "Vì sao chọn".
+      about: z
+        .object({
+          heading: z.string(),
+          lead: z.string(),
+          paragraphs: z.array(z.string()).min(1),
+          image: image().optional(),
+          imageAlt: z.string().optional(),
+          // Mốc đáng nhớ (năm thành lập, số lớp...). Để trống nếu khách
+          // không có con số nào kiểm chứng được — KHÔNG bịa cho đủ chỗ.
+          highlights: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
+        })
+        .optional(),
+
       whyUs: z.object({
         heading: z.string(),
         items: z

@@ -24,8 +24,8 @@
     "eyebrow": "[MOCK: Nhãn nhỏ trên tiêu đề]",
     "heading": "[MOCK: Tiêu đề hero mẫu]",
     "subheading": "[MOCK: Mô tả ngắn dưới tiêu đề hero, minh họa độ dài thực tế của một câu subheading.]",
-    "primaryCta": { "label": "[MOCK: Đăng ký tư vấn]", "href": "#lien-he" },
-    "secondaryCta": { "label": "[MOCK: Xem khóa học]", "href": "#khoa-hoc" },
+    "primaryCta": { "label": "[MOCK: Đăng ký tư vấn]", "href": "/lien-he" },
+    "secondaryCta": { "label": "[MOCK: Xem khóa học]", "href": "/khoa-hoc" },
     "image": "../../assets/placeholder-hero.svg",
     "imageAlt": "[MOCK: Ảnh banner mẫu]",
     "commitments": [
@@ -53,6 +53,20 @@
         "summary": "[MOCK: Mô tả khóa học mẫu 2, minh họa trường hợp chưa công bố học phí.]",
         "featured": false
       }
+    ]
+  },
+  "about": {
+    "heading": "[MOCK: Giới thiệu trung tâm mẫu]",
+    "lead": "[MOCK: Câu dẫn mở đầu phần giới thiệu, viết ngắn gọn và có cảm xúc hơn phần mô tả SEO.]",
+    "paragraphs": [
+      "[MOCK: Đoạn giới thiệu 1 — lịch sử thành lập hoặc lý do ra đời.]",
+      "[MOCK: Đoạn giới thiệu 2 — triết lý dạy học hoặc cách vận hành.]"
+    ],
+    "image": "../../assets/placeholder-activity.svg",
+    "imageAlt": "[MOCK: Ảnh minh họa trung tâm mẫu]",
+    "highlights": [
+      { "label": "[MOCK: Năm thành lập]", "value": "[MOCK: 20XX]" },
+      { "label": "[MOCK: Số lớp đang dạy]", "value": "[MOCK: XX lớp]" }
     ]
   },
   "whyUs": {

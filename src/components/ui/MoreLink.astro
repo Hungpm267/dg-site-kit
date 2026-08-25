@@ -1,0 +1,39 @@
+---
+/*
+  Link "xem tất cả" ở cuối một section trên trang chủ, dẫn sang trang con đầy đủ.
+  Tách thành component vì dùng ở ba chỗ (khóa học, vì sao chọn, hoạt động)
+  và mỗi chỗ đều cần đúng mũi tên đó, đúng cách trượt đó khi rê chuột.
+*/
+interface Props {
+  href: string;
+  label: string;
+  // Nền tối (section brand-900) cần chữ trắng thay vì navy.
+  tone?: 'dark' | 'light';
+}
+
+const { href, label, tone = 'dark' } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={[
+    'group mt-12 inline-flex items-center gap-2.5 border-b-2 pb-1.5 text-base font-semibold transition-colors',
+    tone === 'light'
+      ? 'border-gold-400 text-white hover:border-white'
+      : 'border-gold-400 text-brand-900 hover:border-brand-900',
+  ]}
+>
+  {label}
+  <svg
+    class="size-4 transition-transform duration-300 group-hover:translate-x-1"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+</a>

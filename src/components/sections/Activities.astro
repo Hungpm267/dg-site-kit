@@ -1,12 +1,16 @@
 ---
 import { Image } from 'astro:assets';
+import MoreLink from '../ui/MoreLink.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   activities: CollectionEntry<'clients'>['data']['activities'];
+  headingLevel?: 'h1' | 'h2';
+  more?: { label: string; href: string };
 }
 
-const { activities } = Astro.props;
+const { activities, headingLevel = 'h2', more } = Astro.props;
+const Heading = headingLevel;
 
 // Ảnh đầu chạy khổ lớn, phần còn lại xếp lưới. Nếu ảnh của khách đã có sẵn
 // khung/chữ in trên ảnh, để chúng cùng một cỡ đều tăm tắp sẽ rất nặng mắt.
@@ -16,9 +20,9 @@ const [lead, ...rest] = activities.items;
 <section id="hoat-dong" class="scroll-mt-20 bg-paper py-20 sm:py-28">
   <div class="mx-auto max-w-5xl px-4 sm:px-6">
     <p class="eyebrow text-brand-600">Tại trung tâm</p>
-    <h2 class="mt-5 max-w-2xl font-display text-4xl leading-tight font-bold text-brand-900 sm:text-5xl">
+    <Heading class="mt-5 max-w-2xl font-display text-4xl leading-tight font-bold text-brand-900 sm:text-5xl">
       {activities.heading}
-    </h2>
+    </Heading>
     <p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-500">{activities.intro}</p>
 
     <figure class="lift mt-14" data-reveal>
@@ -62,5 +66,7 @@ const [lead, ...rest] = activities.items;
         ))
       }
     </ul>
+
+    {more && <MoreLink href={more.href} label={more.label} />}
   </div>
 </section>

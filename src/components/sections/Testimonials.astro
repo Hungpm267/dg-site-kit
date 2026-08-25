@@ -4,9 +4,11 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   testimonials: CollectionEntry<'clients'>['data']['testimonials'];
+  headingLevel?: 'h1' | 'h2';
 }
 
-const { testimonials } = Astro.props;
+const { testimonials, headingLevel = 'h2' } = Astro.props;
+const Heading = headingLevel;
 const items = testimonials.items;
 const n = items.length;
 
@@ -118,9 +120,9 @@ ${rules}
 <section id="cam-nhan" class="scroll-mt-20 bg-brand-900 py-20 sm:py-28">
   <div class="mx-auto max-w-5xl px-4 sm:px-6">
     <p class="eyebrow text-gold-400">Cảm nhận học viên</p>
-    <h2 class="mt-5 max-w-2xl font-display text-4xl leading-tight font-bold text-white sm:text-5xl">
+    <Heading class="mt-5 max-w-2xl font-display text-4xl leading-tight font-bold text-white sm:text-5xl">
       {testimonials.heading}
-    </h2>
+    </Heading>
     {
       testimonials.intro && (
         <p class="mt-5 max-w-2xl text-lg leading-relaxed text-brand-200">{testimonials.intro}</p>

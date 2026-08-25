@@ -1,12 +1,16 @@
 ---
 import Icon from '../ui/Icon.astro';
+import MoreLink from '../ui/MoreLink.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   whyUs: CollectionEntry<'clients'>['data']['whyUs'];
+  headingLevel?: 'h1' | 'h2';
+  more?: { label: string; href: string };
 }
 
-const { whyUs } = Astro.props;
+const { whyUs, headingLevel = 'h2', more } = Astro.props;
+const Heading = headingLevel;
 ---
 
 {/* Không dùng thẻ có viền và đổ bóng — chỉ nét mảnh ngăn cột, để phần này
@@ -14,14 +18,14 @@ const { whyUs } = Astro.props;
 <section id="vi-sao" class="scroll-mt-20 bg-white py-20 sm:py-28">
   <div class="mx-auto max-w-5xl px-4 sm:px-6">
     <p class="eyebrow text-brand-600">Cam kết của trung tâm</p>
-    <h2 class="mt-5 max-w-2xl font-display text-4xl leading-tight font-bold text-brand-900 sm:text-5xl">
+    <Heading class="mt-5 max-w-2xl font-display text-4xl leading-tight font-bold text-brand-900 sm:text-5xl">
       {whyUs.heading}
-    </h2>
+    </Heading>
 
-    <div class="stagger mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
       {
-        whyUs.items.map((item) => (
-          <div class="lift border-t border-paper-line pt-6">
+        whyUs.items.map((item, i) => (
+          <div class="lift border-t border-paper-line pt-6" data-reveal style={`--reveal-delay:${i * 80}ms`}>
             <Icon name={item.icon} class="size-6 text-brand-600" />
             <h3 class="mt-4 font-display text-xl font-bold text-brand-900">{item.title}</h3>
             <p class="mt-2 text-sm leading-relaxed text-ink-500">{item.body}</p>
@@ -29,5 +33,7 @@ const { whyUs } = Astro.props;
         ))
       }
     </div>
+
+    {more && <MoreLink href={more.href} label={more.label} />}
   </div>
 </section>
