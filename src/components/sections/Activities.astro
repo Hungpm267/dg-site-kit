@@ -21,7 +21,7 @@ const [lead, ...rest] = activities.items;
     </h2>
     <p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-500">{activities.intro}</p>
 
-    <figure class="reveal lift mt-14">
+    <figure class="lift mt-14" data-reveal>
       <div class="lift-zoom">
       <Image
         src={lead.image}
@@ -29,7 +29,7 @@ const [lead, ...rest] = activities.items;
         widths={[640, 1024, 1600]}
         sizes="(min-width: 1024px) 64rem, 100vw"
         loading="lazy"
-        class="reveal-curtain w-full rounded-sm"
+        class="w-full rounded-sm"
       />
       </div>
       <figcaption class="lift-line mt-4 flex flex-col gap-1 border-t border-paper-line pt-4 sm:flex-row sm:gap-6">
@@ -38,11 +38,11 @@ const [lead, ...rest] = activities.items;
       </figcaption>
     </figure>
 
-    <ul class="stagger mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
       {
-        rest.map((item) => (
+        rest.map((item, i) => (
           <li>
-            <figure class="lift">
+            <figure class="lift" data-reveal style={`--reveal-delay:${i * 100}ms`}>
               <div class="lift-zoom rounded-sm">
               <Image
                 src={item.image}
@@ -50,7 +50,7 @@ const [lead, ...rest] = activities.items;
                 widths={[320, 640]}
                 sizes="(min-width: 1024px) 20rem, (min-width: 640px) 50vw, 100vw"
                 loading="lazy"
-                class="reveal-curtain aspect-4/3 w-full rounded-sm object-cover"
+                class="aspect-4/3 w-full rounded-sm object-cover"
               />
               </div>
               <figcaption class="lift-line mt-4 border-t border-paper-line pt-4">

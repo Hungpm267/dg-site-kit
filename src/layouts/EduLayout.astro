@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { Image } from 'astro:assets';
 import Icon from '../components/ui/Icon.astro';
+import RevealScript from '../components/ui/RevealScript.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -259,5 +260,7 @@ const jsonLd = {
         </p>
       </div>
     </footer>
+
+    <RevealScript />
   </body>
 </html>

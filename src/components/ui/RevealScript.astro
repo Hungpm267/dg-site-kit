@@ -1,0 +1,41 @@
+---
+/**
+ * RevealScript — thiết lập MỘT IntersectionObserver duy nhất cho mọi phần tử
+ * [data-reveal] trên trang. Không phụ thuộc thư viện ngoài.
+ *
+ * Đặt component này ĐÚNG MỘT LẦN trong layout, ngay trước </body>.
+ * (Astro tự gom & dedupe <script>, nên có nhiều trang import cũng chỉ load 1 lần.)
+ *
+ * Đây là trường hợp JS thật sự cần thiết — hiệu ứng theo cuộn không làm bằng
+ * CSS thuần được. Chi phí ~15 dòng, không kéo theo dependency nào.
+ *
+ * Đặt: src/components/ui/RevealScript.astro
+ */
+---
+
+<script>
+  const els = document.querySelectorAll('[data-reveal]');
+
+  if (els.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target); // hiện xong là thôi, không theo dõi nữa
+          }
+        }
+      },
+      {
+        // Kích hoạt khi phần tử vào tầm nhìn ~10% từ dưới lên, lộ 15% chiều cao.
+        rootMargin: '0px 0px -10% 0px',
+        threshold: 0.15,
+      },
+    );
+
+    els.forEach((el) => io.observe(el));
+  } else {
+    // Trình duyệt quá cũ (rất hiếm) → hiện luôn toàn bộ, tuyệt đối không giấu nội dung.
+    els.forEach((el) => el.classList.add('is-visible'));
+  }
+</script>
