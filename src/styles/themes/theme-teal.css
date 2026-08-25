@@ -1,0 +1,37 @@
+/*
+ * Theme mặc định DG — dg-teal #0d9488.
+ * Đây là theme dùng khi client mới chưa có bộ màu riêng.
+ * Đổi khách có brand màu riêng: copy file này thành theme-<khach>.css,
+ * đổi giá trị token (giữ nguyên TÊN token), rồi sửa dòng @import trong
+ * src/styles/global.css sang file mới. KHÔNG sửa component — mọi section
+ * chỉ tham chiếu TÊN token (--color-brand-*, --color-gold-*, --color-paper*,
+ * --color-ink-*), không tham chiếu giá trị cụ thể.
+ */
+@theme {
+  --color-brand-50: #f0fdfa;
+  --color-brand-100: #ccfbf1;
+  --color-brand-200: #99f6e4;
+  --color-brand-300: #5eead4;
+  --color-brand-400: #2dd4bf;
+  --color-brand-500: #14b8a6;
+  --color-brand-600: #0d9488; /* dg-teal */
+  --color-brand-700: #0f766e;
+  --color-brand-800: #115e59;
+  --color-brand-900: #134e4a;
+  --color-brand-950: #042f2e;
+
+  /* Nhấn phụ — cùng vai trò với "gold" trong theme-example.css: badge nổi bật, CTA phụ. */
+  --color-gold-300: #fcd34d;
+  --color-gold-400: #fbbf24;
+  --color-gold-600: #d97706;
+
+  /* Nền sáng cho các section xen kẽ với nền trắng */
+  --color-paper: #f6f9f8;
+  --color-paper-line: #dfe7e5;
+
+  /* Chữ */
+  --color-ink-400: #94a3b8;
+  --color-ink-500: #64748b;
+  --color-ink-700: #334155;
+  --color-ink-900: #0f172a;
+}

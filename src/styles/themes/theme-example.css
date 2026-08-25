@@ -1,0 +1,39 @@
+/*
+ * Ví dụ theme tùy biến — minh họa cách tạo theme riêng khi khách có bộ màu
+ * thương hiệu cụ thể (ví dụ: lấy màu từ banner/logo khách cung cấp).
+ * Copy file này (hoặc theme-teal.css) thành theme-<khach>.css, đổi giá trị
+ * token, rồi sửa dòng @import trong src/styles/global.css. KHÔNG sửa component.
+ *
+ * Bộ màu dưới đây là ví dụ thật lấy từ một dự án đã triển khai (navy + gold
+ * đầy đủ) — giữ lại để minh họa một theme hoàn chỉnh khác với mặc định.
+ */
+@theme {
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #dee6fe;
+  --color-brand-200: #c2d0fc;
+  --color-brand-300: #97b0f9;
+  --color-brand-400: #6486f4;
+  --color-brand-500: #3a5ce9;
+  --color-brand-600: #0134a3;
+  --color-brand-700: #01288f;
+  --color-brand-800: #011d7b;
+  --color-brand-900: #001762;
+  --color-brand-950: #000d3d;
+
+  --color-gold-50: #fffbeb;
+  --color-gold-100: #fff5c9;
+  --color-gold-200: #fee98d;
+  --color-gold-300: #fedd51;
+  --color-gold-400: #fdd41c;
+  --color-gold-500: #eabb00;
+  --color-gold-600: #c29200;
+  --color-gold-700: #916a00;
+
+  --color-paper: #f4f6f9;
+  --color-paper-line: #dfe4ec;
+
+  --color-ink-400: #94a3b8;
+  --color-ink-500: #64748b;
+  --color-ink-700: #334155;
+  --color-ink-900: #0f172a;
+}
